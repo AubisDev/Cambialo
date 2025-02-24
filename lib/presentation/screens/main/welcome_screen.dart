@@ -20,61 +20,100 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     final textStyle = Theme.of(context).textTheme;
     return Scaffold(
       backgroundColor: Color.fromRGBO(245, 189, 117, 1.0),
-      body: Center(
-        child: PageView.builder(
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+      body: PageView.builder(
+        itemBuilder: (context, index) {
+          return Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (currentStep == 0)
-                    _HowToUseAppFirstStep()
-                  else if (currentStep == 1)
-                    _HowToUseAppSecondStep()
-                  else if (currentStep == 2)
-                    _HowToUseAppThirdStep(),
                   Padding(
-                    padding: const EdgeInsets.only(top: 16, bottom: 32),
-                    child: _CurrentStepsIndicator(currentStep: currentStep),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        backgroundColor: colors.primary,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          if (currentStep == 2) {
-                            context.go("/");
-                          } else {
-                            currentStep++;
-                          }
-                        });
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: Text(
-                            "Siguiente",
-                            style: textStyle.bodyLarge?.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600),
+                    padding: const EdgeInsets.only(bottom: 16.0, top: 80),
+                    child: Column(
+                      children: [
+                        if (currentStep == 0)
+                          _HowToUseAppFirstStep()
+                        else if (currentStep == 1)
+                          _HowToUseAppSecondStep()
+                        else if (currentStep == 2)
+                          _HowToUseAppThirdStep(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16, bottom: 32),
+                          child:
+                              _CurrentStepsIndicator(currentStep: currentStep),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6)),
+                              backgroundColor: colors.primary,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                if (currentStep == 2) {
+                                  context.go("/");
+                                } else {
+                                  currentStep++;
+                                }
+                              });
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
+                                child: Text(
+                                  "Siguiente",
+                                  style: textStyle.bodyLarge?.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            );
-          },
-        ),
+              Positioned(
+                top: 40,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: currentStep != 0
+                        ? MainAxisAlignment.spaceBetween
+                        : MainAxisAlignment.end,
+                    children: [
+                      if (currentStep != 0)
+                        FadeIn(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.ease,
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                currentStep--;
+                              });
+                            },
+                            icon: const Icon(Icons.arrow_back_ios),
+                          ),
+                        ),
+                      TextButton(
+                        onPressed: () => context.go("/"),
+                        child: Text("Saltar"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -87,7 +126,7 @@ class _HowToUseAppFirstStep extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return FadeIn(
-      delay: const Duration(milliseconds: 500),
+      delay: const Duration(milliseconds: 300),
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeIn,
       child: Column(
