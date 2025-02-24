@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -85,50 +86,38 @@ class _HowToUseAppFirstStep extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
 
-    return Column(
-      children: [
-        Text(
-          "Bienvenido a",
-          style: textStyle.displaySmall?.copyWith(
-            color: Colors.grey.shade800,
+    return FadeIn(
+      delay: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeIn,
+      child: Column(
+        children: [
+          Text(
+            "Bienvenido a",
+            style: textStyle.displaySmall?.copyWith(
+              color: Colors.grey.shade800,
+            ),
           ),
-        ),
-        Image.asset(
-          "assets/images/styled_title.png",
-          width: 300,
-        ),
-        const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withOpacity(0.5),
-                  Colors.white.withOpacity(0.25),
-                  Colors.white.withOpacity(0.1),
-                  colors.primary.withOpacity(0.1),
-                  colors.primary.withOpacity(0.25),
-                  colors.primary.withOpacity(0.50),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-              shape: BoxShape.circle),
-          child: Image.asset(
+          Image.asset(
+            "assets/images/styled_title.png",
+            width: 300,
+          ),
+          const SizedBox(height: 16),
+          Image.asset(
             "assets/images/stepper_2.jpg",
             height: 300,
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-          child: Text(
-            textAlign: TextAlign.center,
-            "Aca podras, intercambiar tus articulos por otros",
-            style: textStyle.bodyLarge?.copyWith(
-                color: Colors.grey.shade800, fontWeight: FontWeight.w600),
-          ),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+            child: Text(
+              textAlign: TextAlign.center,
+              "Aca podras, intercambiar tus articulos por otros",
+              style: textStyle.bodyLarge?.copyWith(
+                  color: Colors.grey.shade800, fontWeight: FontWeight.w600),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -139,50 +128,37 @@ class _HowToUseAppSecondStep extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
 
-    return Column(
-      children: [
-        Text(
-          "Publica tu producto en",
-          style: textStyle.displaySmall?.copyWith(
-            color: Colors.grey.shade800,
+    return FadeInRight(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeIn,
+      child: Column(
+        children: [
+          Text(
+            "Publica tu producto en",
+            style: textStyle.displaySmall?.copyWith(
+              color: Colors.grey.shade800,
+            ),
           ),
-        ),
-        Image.asset(
-          "assets/images/styled_title.png",
-          width: 300,
-        ),
-        const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withOpacity(0.5),
-                  Colors.white.withOpacity(0.25),
-                  Colors.white.withOpacity(0.1),
-                  colors.primary.withOpacity(0.1),
-                  colors.primary.withOpacity(0.25),
-                  colors.primary.withOpacity(0.50),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-              shape: BoxShape.circle),
-          child: Image.asset(
+          Image.asset(
+            "assets/images/styled_title.png",
+            width: 300,
+          ),
+          const SizedBox(height: 16),
+          Image.asset(
             "assets/images/stepper_3.png",
             height: 300,
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-          child: Text(
-            textAlign: TextAlign.center,
-            "Escribe una descripcion mas detallada de tu producto y el que quieres",
-            style: textStyle.bodyLarge?.copyWith(
-                color: Colors.grey.shade800, fontWeight: FontWeight.w600),
-          ),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+            child: Text(
+              textAlign: TextAlign.center,
+              "Escribe una descripcion mas detallada de tu producto y el que quieres",
+              style: textStyle.bodyLarge?.copyWith(
+                  color: Colors.grey.shade800, fontWeight: FontWeight.w600),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -193,50 +169,37 @@ class _HowToUseAppThirdStep extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
 
-    return Column(
-      children: [
-        Text(
-          "Acuerda un sitio",
-          style: textStyle.displaySmall?.copyWith(
-            color: Colors.grey.shade800,
+    return FadeInRight(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeIn,
+      child: Column(
+        children: [
+          Text(
+            "Acuerda un sitio",
+            style: textStyle.displaySmall?.copyWith(
+              color: Colors.grey.shade800,
+            ),
           ),
-        ),
-        Image.asset(
-          "assets/images/styled_title.png",
-          width: 300,
-        ),
-        const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withOpacity(0.5),
-                  Colors.white.withOpacity(0.25),
-                  Colors.white.withOpacity(0.1),
-                  colors.primary.withOpacity(0.1),
-                  colors.primary.withOpacity(0.25),
-                  colors.primary.withOpacity(0.50),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-              shape: BoxShape.circle),
-          child: Image.asset(
+          Image.asset(
+            "assets/images/styled_title.png",
+            width: 300,
+          ),
+          const SizedBox(height: 16),
+          Image.asset(
             "assets/images/stepper_22.png",
             height: 300,
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-          child: Text(
-            textAlign: TextAlign.center,
-            "Cuando aceptes un intercambio, busca un sitio seguro y realiza el cambio",
-            style: textStyle.bodyLarge?.copyWith(
-                color: Colors.grey.shade800, fontWeight: FontWeight.w600),
-          ),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+            child: Text(
+              textAlign: TextAlign.center,
+              "Cuando aceptes un intercambio, busca un sitio seguro y realiza el cambio",
+              style: textStyle.bodyLarge?.copyWith(
+                  color: Colors.grey.shade800, fontWeight: FontWeight.w600),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
