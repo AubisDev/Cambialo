@@ -17,71 +17,98 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme;
-    return Scaffold(body: Center(child: PageView.builder(
-      itemBuilder: (context, index) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _HowToUseAppStepper(),
-            Padding(
-              padding: const EdgeInsets.only(top: 16, bottom: 32),
-              child: _CurrentStepsIndicator(currentStep: currentStep),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colors.primary,
-                ),
-                onPressed: () {
-                  setState(() {
-                    if (currentStep == 1) {
-                      context.go("/");
-                    } else {
-                      currentStep++;
-                    }
-                  });
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Text(
-                      "Siguiente",
-                      style: textStyle.bodyLarge?.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.w600),
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(245, 189, 117, 1.0),
+      body: Center(
+        child: PageView.builder(
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (currentStep == 0)
+                    _HowToUseAppFirstStep()
+                  else if (currentStep == 1)
+                    _HowToUseAppSecondStep()
+                  else if (currentStep == 2)
+                    _HowToUseAppThirdStep(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 32),
+                    child: _CurrentStepsIndicator(currentStep: currentStep),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                        backgroundColor: colors.primary,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          if (currentStep == 2) {
+                            context.go("/");
+                          } else {
+                            currentStep++;
+                          }
+                        });
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Text(
+                            "Siguiente",
+                            style: textStyle.bodyLarge?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ),
-          ],
-        );
-      },
-    )));
+            );
+          },
+        ),
+      ),
+    );
   }
 }
 
-class _HowToUseAppStepper extends StatelessWidget {
-  const _HowToUseAppStepper({super.key});
-
+class _HowToUseAppFirstStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
+    final colors = Theme.of(context).colorScheme;
+
     return Column(
       children: [
         Text(
-          "Bienvenido a Truequealo",
-          style: textStyle.titleLarge,
+          "Bienvenido a",
+          style: textStyle.displaySmall?.copyWith(
+            color: Colors.grey.shade800,
+          ),
         ),
+        Image.asset(
+          "assets/images/styled_title.png",
+          width: 300,
+        ),
+        const SizedBox(height: 16),
         Container(
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.blue.withOpacity(0.5),
-                  Colors.blue.shade400.withOpacity(0.35),
-                  Colors.blue.shade300.withOpacity(0.25),
+                  Colors.white.withOpacity(0.5),
+                  Colors.white.withOpacity(0.25),
+                  Colors.white.withOpacity(0.1),
+                  colors.primary.withOpacity(0.1),
+                  colors.primary.withOpacity(0.25),
+                  colors.primary.withOpacity(0.50),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -93,13 +120,120 @@ class _HowToUseAppStepper extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
           child: Text(
             textAlign: TextAlign.center,
             "Aca podras, intercambiar tus articulos por otros",
-            style: textStyle.titleMedium?.copyWith(
-              color: Colors.grey.shade800,
-            ),
+            style: textStyle.bodyLarge?.copyWith(
+                color: Colors.grey.shade800, fontWeight: FontWeight.w600),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _HowToUseAppSecondStep extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme;
+    final colors = Theme.of(context).colorScheme;
+
+    return Column(
+      children: [
+        Text(
+          "Publica tu producto en",
+          style: textStyle.displaySmall?.copyWith(
+            color: Colors.grey.shade800,
+          ),
+        ),
+        Image.asset(
+          "assets/images/styled_title.png",
+          width: 300,
+        ),
+        const SizedBox(height: 16),
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white.withOpacity(0.5),
+                  Colors.white.withOpacity(0.25),
+                  Colors.white.withOpacity(0.1),
+                  colors.primary.withOpacity(0.1),
+                  colors.primary.withOpacity(0.25),
+                  colors.primary.withOpacity(0.50),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              shape: BoxShape.circle),
+          child: Image.asset(
+            "assets/images/stepper_3.png",
+            height: 300,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+          child: Text(
+            textAlign: TextAlign.center,
+            "Escribe una descripcion mas detallada de tu producto y el que quieres",
+            style: textStyle.bodyLarge?.copyWith(
+                color: Colors.grey.shade800, fontWeight: FontWeight.w600),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _HowToUseAppThirdStep extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme;
+    final colors = Theme.of(context).colorScheme;
+
+    return Column(
+      children: [
+        Text(
+          "Acuerda un sitio",
+          style: textStyle.displaySmall?.copyWith(
+            color: Colors.grey.shade800,
+          ),
+        ),
+        Image.asset(
+          "assets/images/styled_title.png",
+          width: 300,
+        ),
+        const SizedBox(height: 16),
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white.withOpacity(0.5),
+                  Colors.white.withOpacity(0.25),
+                  Colors.white.withOpacity(0.1),
+                  colors.primary.withOpacity(0.1),
+                  colors.primary.withOpacity(0.25),
+                  colors.primary.withOpacity(0.50),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              shape: BoxShape.circle),
+          child: Image.asset(
+            "assets/images/stepper_22.png",
+            height: 300,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+          child: Text(
+            textAlign: TextAlign.center,
+            "Cuando aceptes un intercambio, busca un sitio seguro y realiza el cambio",
+            style: textStyle.bodyLarge?.copyWith(
+                color: Colors.grey.shade800, fontWeight: FontWeight.w600),
           ),
         )
       ],
