@@ -48,62 +48,138 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: textStyles.titleLarge,
               ),
             ),
-            Stack(
-              children: [
-                Card(
-                  child: SizedBox(
-                    width: 250,
-                    child: Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Row(
-                            children: [
-                              CircleAvatar(
-                                maxRadius: 16,
-                                child: Text(
-                                  "A",
-                                ),
-                              ),
-                              SizedBox(width: 4),
-                              Text("Roberto Galipan"),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Image.network(
-                            "https://scontent.fccs3-2.fna.fbcdn.net/v/t39.30808-6/480957331_2702570956604350_3419773857079888296_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=ZTo_KnPu8NMQ7kNvgFO38EN&_nc_oc=AdjlJtrXQAkLe5xd0y3BJMYRCoaezjnNLGZA2ops50-Nhh2Eqz6fkTzZtV6wvUJWdD0&_nc_zt=23&_nc_ht=scontent.fccs3-2.fna&_nc_gid=Ag9Fcm47-JLY4wkT2drvw6O&oh=00_AYB-pfc5TWFkM7ZsRWzSNx3oHB_HoiwkaSDmJUDSpahq5w&oe=67C28F63",
-                            fit: BoxFit.cover,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: Text(
-                              "Cambio moto por carro mas diferencia o cambio por ",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: textStyles.bodySmall
-                                  ?.copyWith(color: Colors.grey.shade700),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 14,
-                  right: 20,
-                  child: Text(
-                    "12/02/22",
-                    style: textStyles.bodySmall
-                        ?.copyWith(color: Colors.grey.shade700),
-                  ),
-                ),
-              ],
-            ),
+            _PostCard(textStyles: textStyles),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _PostCard extends StatelessWidget {
+  const _PostCard({
+    super.key,
+    required this.textStyles,
+  });
+
+  final TextTheme textStyles;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Card(
+          child: SizedBox(
+            width: 250,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.only(
+                      top: 24,
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: Column(
+                      children: [
+                        const Row(
+                          children: [
+                            CircleAvatar(
+                              maxRadius: 16,
+                              child: Text(
+                                "A",
+                              ),
+                            ),
+                            SizedBox(width: 6),
+                            Text("Roberto Galipan"),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Image.network(
+                          "https://scontent.fccs3-2.fna.fbcdn.net/v/t39.30808-6/480957331_2702570956604350_3419773857079888296_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=ZTo_KnPu8NMQ7kNvgFO38EN&_nc_oc=AdjlJtrXQAkLe5xd0y3BJMYRCoaezjnNLGZA2ops50-Nhh2Eqz6fkTzZtV6wvUJWdD0&_nc_zt=23&_nc_ht=scontent.fccs3-2.fna&_nc_gid=Ag9Fcm47-JLY4wkT2drvw6O&oh=00_AYB-pfc5TWFkM7ZsRWzSNx3oHB_HoiwkaSDmJUDSpahq5w&oe=67C28F63",
+                          fit: BoxFit.cover,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 16.0,
+                          ),
+                          child: Text(
+                            "Cambio moto por carro mas diferencia o cambio por ",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: textStyles.bodySmall
+                                ?.copyWith(color: Colors.grey.shade700),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                      ],
+                    )),
+                Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: Colors.black26),
+                    ),
+                  ),
+                  height: 40,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("34", style: textStyles.labelMedium),
+                              const SizedBox(width: 4),
+                              const Icon(
+                                Icons.thumb_up_alt_outlined,
+                                size: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 1,
+                        color: Colors.black26,
+                        height: double.infinity,
+                      ),
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "4",
+                                style: textStyles.labelMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(width: 4),
+                              const Icon(
+                                Icons.mode_comment_outlined,
+                                size: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          top: 14,
+          right: 20,
+          child: Text(
+            "12/02/22",
+            style: textStyles.bodySmall?.copyWith(color: Colors.grey.shade700),
+          ),
+        ),
+      ],
     );
   }
 }
