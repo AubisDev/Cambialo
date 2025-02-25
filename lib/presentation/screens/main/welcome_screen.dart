@@ -19,7 +19,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     final colors = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme;
     return Scaffold(
-      backgroundColor: Color.fromRGBO(245, 189, 117, 1.0),
       body: PageView.builder(
         itemBuilder: (context, index) {
           return Stack(
@@ -138,7 +137,7 @@ class _HowToUseAppFirstStep extends StatelessWidget {
             ),
           ),
           Image.asset(
-            "assets/images/styled_title.png",
+            "assets/images/logo2.png",
             width: 300,
           ),
           const SizedBox(height: 16),
@@ -179,7 +178,7 @@ class _HowToUseAppSecondStep extends StatelessWidget {
             ),
           ),
           Image.asset(
-            "assets/images/styled_title.png",
+            "assets/images/logo2.png",
             width: 300,
           ),
           const SizedBox(height: 16),
@@ -220,7 +219,7 @@ class _HowToUseAppThirdStep extends StatelessWidget {
             ),
           ),
           Image.asset(
-            "assets/images/styled_title.png",
+            "assets/images/logo2.png",
             width: 300,
           ),
           const SizedBox(height: 16),
