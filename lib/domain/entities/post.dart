@@ -2,12 +2,13 @@ import 'package:truequealo/domain/entities/user.dart';
 
 class Post {
   final String id;
-  final User user;
+  final User createdBy;
   final DateTime createdAt;
   final String portraitImage;
   final List<String> images;
   final String location;
   final String description;
+  final String title;
   final int likes;
   final List<User> likedBy;
   final int commentsAmount;
@@ -15,12 +16,13 @@ class Post {
 
   Post({
     required this.id,
-    required this.user,
+    required this.createdBy,
     required this.createdAt,
     required this.portraitImage,
     required this.images,
     required this.location,
     required this.description,
+    required this.title,
     required this.likes,
     required this.likedBy,
     required this.commentsAmount,
