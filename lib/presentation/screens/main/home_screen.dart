@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: textStyles.titleLarge,
               ),
             ),
-            _PostCard(textStyles: textStyles),
+            _PostCard(),
           ],
         ),
       ),
@@ -57,15 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _PostCard extends StatelessWidget {
-  const _PostCard({
-    super.key,
-    required this.textStyles,
-  });
-
-  final TextTheme textStyles;
-
   @override
   Widget build(BuildContext context) {
+    final textStyles = Theme.of(context).textTheme;
+    final colors = Theme.of(context).colorScheme;
     return Stack(
       children: [
         Card(
@@ -82,16 +77,33 @@ class _PostCard extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        const Row(
+                        Row(
                           children: [
-                            CircleAvatar(
+                            const CircleAvatar(
                               maxRadius: 16,
                               child: Text(
                                 "A",
                               ),
                             ),
-                            SizedBox(width: 6),
-                            Text("Roberto Galipan"),
+                            const SizedBox(width: 6),
+                            Column(
+                              children: [
+                                const Text("Roberto Galipan"),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.location_pin, size: 12),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      "Ciudad Guayana",
+                                      style: textStyles.labelSmall?.copyWith(
+                                        color: Colors.grey,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                           ],
                         ),
                         const SizedBox(height: 8),
