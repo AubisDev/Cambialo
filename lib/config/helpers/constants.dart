@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:truequealo/domain/entities/category.dart';
 
+import '../../domain/entities/activity.dart';
+
 final List<Category> categories = [
   Category(
       id: '1', name: 'Accesorios de Vehiculos', icon: Icons.directions_car),
@@ -15,4 +17,16 @@ final List<Category> categories = [
   Category(id: '10', name: 'Audio y Musica', icon: Icons.music_note),
   Category(id: '11', name: 'Ropa', icon: Icons.checkroom),
   Category(id: '12', name: 'Otros', icon: Icons.drag_handle),
+];
+
+final List<Activity> activities = [
+  Activity(
+      id: "a1",
+      name: "Notificaciones",
+      icon: Icons.notifications_active_outlined),
+  Activity(
+      id: "a2", name: "Mis preguntas", icon: Icons.question_answer_outlined),
+  Activity(id: "a3", name: "Mis publicaciones", icon: Icons.newspaper_outlined),
+  Activity(id: "a4", name: "Favoritos", icon: Icons.favorite_outline_sharp),
+  Activity(id: "a5", name: "Soporte", icon: Icons.help_outline_outlined),
 ];
