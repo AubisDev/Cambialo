@@ -28,5 +28,9 @@ final List<Activity> activities = [
       id: "a2", name: "Mis preguntas", icon: Icons.question_answer_outlined),
   Activity(id: "a3", name: "Mis publicaciones", icon: Icons.newspaper_outlined),
   Activity(id: "a4", name: "Favoritos", icon: Icons.favorite_outline_sharp),
-  Activity(id: "a5", name: "Soporte", icon: Icons.help_outline_outlined),
+  Activity(
+      id: "a5",
+      name: "Preguntas frecuentes",
+      icon: Icons.question_mark_outlined),
+  Activity(id: "a6", name: "Soporte", icon: Icons.contact_support_outlined),
 ];
