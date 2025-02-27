@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:truequealo/config/helpers/test_data.dart';
 
+import '../../../config/helpers/utils.dart';
+
 class PostByCategoryScreen extends StatelessWidget {
   final int categoryId;
 
@@ -9,11 +11,13 @@ class PostByCategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
-    final colors = Theme.of(context).colorScheme;
+    final category = getCategoryData(categoryId.toString());
 
+    // TODO Anadir infinite scroll
     return Scaffold(
-      appBar: AppBar(title: Text("Lo ultimo en vehiculos")),
+      appBar: AppBar(title: Text("Lo ultimo en ${category.name}")),
       body: GridView.builder(
+        physics: const BouncingScrollPhysics(),
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemCount: testingPosts.length,
