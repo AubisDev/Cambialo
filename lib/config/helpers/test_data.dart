@@ -23,7 +23,7 @@ final List<Post> testingPosts = [
       images: ['https://random.imagecdn.app/500/300'],
       location: 'Los Angeles',
       description: 'Another sample post.',
-      title: 'Sample Post 2',
+      title: 'Sample Post 2 Sample Post 2 Sample Post 2',
       likes: 3,
       likedBy: [user1],
       commentsAmount: 1,
