@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:truequealo/domain/entities/Category.dart';
+import 'package:truequealo/domain/entities/category.dart';
 
 final List<Category> categories = [
   Category(
