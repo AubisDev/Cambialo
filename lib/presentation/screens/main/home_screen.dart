@@ -1,68 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:truequealo/config/helpers/test_data.dart';
-import 'package:truequealo/presentation/widgets/shared/CustomAppBar.dart';
-import 'package:truequealo/presentation/widgets/widgets.dart';
+import 'package:truequealo/presentation/views/views.dart';
+import 'package:truequealo/presentation/widgets/shared/CustomBottomNavigationBar.dart';
 
 class HomeScreen extends StatefulWidget {
   static const name = "home-screen";
 
-  const HomeScreen({super.key});
+  final int pageIndex;
+  const HomeScreen({super.key, required this.pageIndex});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  int currentStep = 0;
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
+  late PageController pageController;
+
+  List<Widget> pageViews = const [
+    HomeView(),
+    CategoriesView(),
+    ActivitiesView(),
+    HomeView(),
+  ];
+
+  @override
+  void initState() {
+    pageController = PageController(keepPage: true);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    final textStyles = Theme.of(context).textTheme;
-    return Container(
-      color: colors.surface,
-      child: PageView(
-        children: [
-          CustomScrollView(
-            slivers: [
-              const SliverAppBar(
-                floating: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  title: CustomAppBar(),
-                ),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  childCount: 1,
-                  (context, index) {
-                    return Column(
-                      children: [
-                        PostsSlideShow(
-                          posts: testingPosts,
-                        ),
-                        PostHorizontalListView(
-                          posts: testingPosts,
-                          title: "Tus preferencias",
-                        ),
-                        const SizedBox(height: 30),
-                        PostHorizontalListView(
-                          posts: testingPosts,
-                          title: "Novedades del dia",
-                        ),
-                        const SizedBox(height: 30),
-                        PostHorizontalListView(
-                          posts: testingPosts,
-                          title: "Tal vez te interese",
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
-        ],
+    super.build(context);
+
+    if (pageController.hasClients) {
+      pageController.animateToPage(
+        widget.pageIndex,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+      );
+    }
+
+    return Scaffold(
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: pageController,
+        children: pageViews,
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentView: widget.pageIndex,
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

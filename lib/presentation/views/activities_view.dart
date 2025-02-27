@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ActivitiesScreen extends StatelessWidget {
+class ActivitiesView extends StatelessWidget {
   static const name = "activities";
-  const ActivitiesScreen({super.key});
+  const ActivitiesView({super.key});
 
   @override
   Widget build(BuildContext context) {
