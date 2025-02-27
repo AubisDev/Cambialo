@@ -9,10 +9,13 @@ class CategoriesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme;
+    final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Que estas buscando?", style: textStyles.titleLarge),
+        backgroundColor: colors.primary,
+        title: Text("Selecciona tu categoria",
+            style: textStyles.titleLarge?.copyWith(color: colors.onPrimary)),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
