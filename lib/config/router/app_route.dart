@@ -1,35 +1,70 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:truequealo/presentation/screens/main/home_screen.dart';
+import 'package:truequealo/config/router/routes.dart';
 import 'package:truequealo/presentation/screens/post/post_by_category_screen.dart';
+import 'package:truequealo/presentation/views/activities_view.dart';
+import 'package:truequealo/presentation/views/categories_view.dart';
+import 'package:truequealo/presentation/views/home_view.dart';
+import 'package:truequealo/presentation/views/user_account_view.dart';
+import 'package:truequealo/presentation/widgets/layout.dart';
+
+final _rootNavigationkey = GlobalKey<NavigatorState>(debugLabel: "root");
 
 final appRoute = GoRouter(
-  initialLocation: "/home/0",
+  navigatorKey: _rootNavigationkey,
+  initialLocation: Routes.home,
   routes: [
-    GoRoute(
-      path: '/home/:page',
-      name: HomeScreen.name,
-      builder: (context, state) {
-        final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
-        return HomeScreen(pageIndex: pageIndex);
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return LayoutScaffold(navigationShell: navigationShell);
       },
-      routes: [
-        // GoRoute(path: 'post/:id', ),
-        GoRoute(
-          path: 'category/:id', // Ruta anidada para categorías
-          builder: (context, state) {
-            final categoryId = int.parse(state.pathParameters['id'] ?? '0');
-            return PostByCategoryScreen(
-              categoryId: categoryId,
-            );
-          },
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.home,
+              builder: (context, state) => const HomeView(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.categories,
+              builder: (context, state) => const CategoriesView(),
+              routes: [
+                GoRoute(
+                  path: Routes.postByCategoryId,
+                  builder: (context, state) {
+                    final categoryId =
+                        int.parse(state.pathParameters['id'] ?? '0');
+                    return PostByCategoryScreen(categoryId: categoryId);
+                  },
+                )
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.activities,
+              builder: (context, state) => const ActivitiesView(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.account,
+              builder: (context, state) => const UserAccountView(),
+            ),
+          ],
         ),
       ],
     ),
-    //  GoRoute(path: '/login'),
-    //  GoRoute(path: '/register'),
-    GoRoute(
-      path: '/',
-      redirect: (_, __) => 'home/0',
-    )
+
+//  GoRoute(path: '/login'),
+//  GoRoute(path: '/register'),
   ],
 );

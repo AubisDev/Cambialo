@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:truequealo/presentation/views/views.dart';
-import 'package:truequealo/presentation/widgets/shared/CustomBottomNavigationBar.dart';
 
 class HomeScreen extends StatefulWidget {
   static const name = "home-screen";
 
-  final int pageIndex;
-  const HomeScreen({super.key, required this.pageIndex});
+  final Widget? child;
+  const HomeScreen({super.key, this.child});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -39,23 +38,13 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     super.build(context);
 
-    if (pageController.hasClients) {
-      pageController.animateToPage(
-        widget.pageIndex,
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeInOut,
-      );
-    }
-
     return Scaffold(
-      body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: pageController,
-        children: pageViews,
-      ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentView: widget.pageIndex,
-      ),
+      body: widget.child ??
+          PageView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: pageController,
+            children: pageViews,
+          ),
     );
   }
 

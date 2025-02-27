@@ -28,7 +28,7 @@ class CategoriesView extends StatelessWidget {
               children: [
                 ListTile(
                   onTap: () {
-                    context.go('/home/1/category/${category.id}');
+                    context.push('/categories/${category.id}');
                   },
                   title: Text(category.name),
                   leading: Icon(
