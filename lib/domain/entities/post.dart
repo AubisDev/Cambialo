@@ -13,21 +13,22 @@ class Post {
   final List<User> likedBy;
   final int commentsAmount;
   final List<Comment> comments;
+  final List<int> categoriesIds;
 
-  Post({
-    required this.id,
-    required this.createdBy,
-    required this.createdAt,
-    required this.portraitImage,
-    required this.images,
-    required this.location,
-    required this.description,
-    required this.title,
-    required this.likes,
-    required this.likedBy,
-    required this.commentsAmount,
-    required this.comments,
-  });
+  Post(
+      {required this.id,
+      required this.createdBy,
+      required this.createdAt,
+      required this.portraitImage,
+      required this.images,
+      required this.location,
+      required this.description,
+      required this.title,
+      required this.likes,
+      required this.likedBy,
+      required this.commentsAmount,
+      required this.comments,
+      required this.categoriesIds});
 }
 
 class Comment {
