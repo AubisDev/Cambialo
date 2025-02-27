@@ -106,73 +106,79 @@ class _PostCard extends StatelessWidget {
           Card(
             child: SizedBox(
               width: 225,
-              height: 260,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                      padding: const EdgeInsets.only(
-                        top: 24,
-                        left: 20,
-                        right: 20,
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              const CircleAvatar(
-                                maxRadius: 16,
-                                child: Text(
-                                  "A",
+                    padding: const EdgeInsets.only(
+                      top: 12,
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 12,
+                              // maxRadius: 16
+                              child: Text(
+                                "A",
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Column(
+                              children: [
+                                Text(
+                                  "${post.createdBy.firstName} ${post.createdBy.lastName}",
+                                  style: textStyles.bodySmall,
                                 ),
-                              ),
-                              const SizedBox(width: 6),
-                              Column(
-                                children: [
-                                  Text(
-                                      "${post.createdBy.firstName} ${post.createdBy.lastName}"),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.location_pin, size: 12),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        post.location,
-                                        style: textStyles.labelSmall?.copyWith(
-                                          color: Colors.grey,
-                                          fontStyle: FontStyle.italic,
-                                        ),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.location_pin, size: 12),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      post.location,
+                                      style: textStyles.labelSmall?.copyWith(
+                                        color: Colors.grey,
+                                        fontStyle: FontStyle.italic,
                                       ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          FadeInImage(
-                            fit: BoxFit.cover,
-                            placeholder: const AssetImage(
-                                'assets/loaders/image_placeholder.gif'),
-                            // image: NetworkImage(
-                            //   "https://scontent.fccs3-2.fna.fbcdn.net/v/t39.30808-6/480957331_2702570956604350_3419773857079888296_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=ZTo_KnPu8NMQ7kNvgFO38EN&_nc_oc=AdjlJtrXQAkLe5xd0y3BJMYRCoaezjnNLGZA2ops50-Nhh2Eqz6fkTzZtV6wvUJWdD0&_nc_zt=23&_nc_ht=scontent.fccs3-2.fna&_nc_gid=Ag9Fcm47-JLY4wkT2drvw6O&oh=00_AYB-pfc5TWFkM7ZsRWzSNx3oHB_HoiwkaSDmJUDSpahq5w&oe=67C28F63",
-                            // ),
-                            image: NetworkImage(post.portraitImage),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 16.0,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            child: Text(
-                              post.title,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: textStyles.bodySmall
-                                  ?.copyWith(color: Colors.grey.shade700),
-                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        FadeInImage(
+                          height: 160,
+                          fit: BoxFit.cover,
+                          placeholder: const AssetImage(
+                              'assets/loaders/image_placeholder.gif'),
+                          // image: NetworkImage(
+                          //   "https://scontent.fccs3-2.fna.fbcdn.net/v/t39.30808-6/480957331_2702570956604350_3419773857079888296_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=ZTo_KnPu8NMQ7kNvgFO38EN&_nc_oc=AdjlJtrXQAkLe5xd0y3BJMYRCoaezjnNLGZA2ops50-Nhh2Eqz6fkTzZtV6wvUJWdD0&_nc_zt=23&_nc_ht=scontent.fccs3-2.fna&_nc_gid=Ag9Fcm47-JLY4wkT2drvw6O&oh=00_AYB-pfc5TWFkM7ZsRWzSNx3oHB_HoiwkaSDmJUDSpahq5w&oe=67C28F63",
+                          // ),
+                          image: NetworkImage(post.portraitImage),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 16.0,
                           ),
-                          const SizedBox(height: 8),
-                        ],
-                      )),
+                          child: Text(
+                            post.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: textStyles.bodySmall
+                                ?.copyWith(color: Colors.grey.shade700),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
                   Container(
                     decoration: const BoxDecoration(
                       border: Border(
@@ -248,6 +254,7 @@ class _PostCard extends StatelessWidget {
 
 class _Slide extends StatelessWidget {
   final Post post;
+
   const _Slide({super.key, required this.post});
 
   @override
