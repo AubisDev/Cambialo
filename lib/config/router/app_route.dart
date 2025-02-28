@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:truequealo/config/router/routes.dart';
 import 'package:truequealo/presentation/screens/post/post_by_category_screen.dart';
+import 'package:truequealo/presentation/screens/post/post_screen.dart';
 import 'package:truequealo/presentation/views/activities_view.dart';
 import 'package:truequealo/presentation/views/categories_view.dart';
 import 'package:truequealo/presentation/views/home_view.dart';
@@ -24,6 +25,14 @@ final appRoute = GoRouter(
             GoRoute(
               path: Routes.home,
               builder: (context, state) => const HomeView(),
+              routes: [
+                GoRoute(
+                  path: Routes.post, // Agrega la ruta post/:id aquí
+                  builder: (context, state) {
+                    return PostScreen();
+                  },
+                ),
+              ],
             ),
           ],
         ),

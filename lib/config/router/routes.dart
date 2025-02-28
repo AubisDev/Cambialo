@@ -1,7 +1,8 @@
 class Routes {
   Routes._();
 
-  static const String home = "/home";
+  static const String home = "/";
+  static const String post = "/post";
   static const String categories = "/categories";
   static const String postByCategoryId = ":id";
   static const String activities = "/activities";

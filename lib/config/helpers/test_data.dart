@@ -153,9 +153,18 @@ final List<Post> testingPosts = [
     createdBy: user4,
     createdAt: DateTime.now().subtract(Duration(minutes: 5)),
     portraitImage: 'https://random.imagecdn.app/500/300',
-    images: ['https://random.imagecdn.app/500/300'],
+    images: ['https://random.imagecdn.app/900/600'],
     location: 'Berlin',
-    description: 'Quick update from Berlin.',
+    description:
+        '''The first item you will go to retrieve will be Moldy Tome Moldy Tome, located in southwestern Hillsbrad among a bunch of hostile murlocs. You will be looking for a blue book in the dirt. It lays near the edge of the water around a hut with 5-7 murlocs around it and 2-4 patrols that will walk past the area. 
+        
+        If you came from Tarren Mill, the book is the near the 4th hut to the west.
+
+    An easy way to get the Moldy Tome Moldy Tome would be to Soulstone Soulstone yourself, use your  Summon Voidwalker. 
+    
+    Start by killing the patrols then pull any of the mobs that won't pull everything else out of the hut. 
+    
+    Once there are around 3-5 mobs left you can simply send your Pet - Voidwalker Pet - Voidwalker and have it use  Suffering. Once all the remaining murlocs are attacking it, you can run in and grab Moldy Tome Moldy Tome.''',
     title: 'Berlin Update',
     likes: 3,
     likedBy: [user1, user5],
