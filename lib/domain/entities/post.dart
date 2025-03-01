@@ -1,52 +1,49 @@
-import 'package:truequealo/domain/entities/user.dart';
-
 class Post {
-  final String id;
-  final User createdBy;
+  final int id;
+  final int authorId;
   final DateTime createdAt;
-  final String portraitImage;
   final List<String> images;
   final String location;
   final String description;
   final String title;
   final int likes;
-  final List<User> likedBy;
-  final int commentsAmount;
-  final List<Comment> comments;
+  final int dislikes;
+  final List<int> likedBy;
+  final List<int> questionsIds;
   final List<int> categoriesIds;
 
   Post(
       {required this.id,
-      required this.createdBy,
+      required this.author_id,
       required this.createdAt,
-      required this.portraitImage,
       required this.images,
       required this.location,
       required this.description,
       required this.title,
       required this.likes,
+      required this.dislikes,
       required this.likedBy,
-      required this.commentsAmount,
-      required this.comments,
+      required this.questionsIds,
       required this.categoriesIds});
 }
 
-class Comment {
+class Question {
   final String id;
-  final String content;
+  final String description;
+  final bool hasAnswer;
   final String authorId;
   final DateTime createdAt;
   final String postId;
-  final List<Comment>? replies;
+  final String reply;
   final int likes;
 
-  Comment({
-    required this.id,
-    required this.content,
-    required this.authorId,
-    required this.createdAt,
-    required this.postId,
-    this.replies,
-    this.likes = 0,
-  });
+  Question(
+      {required this.id,
+      required this.description,
+      required this.hasAnswer,
+      required this.authorId,
+      required this.createdAt,
+      required this.postId,
+      required this.reply,
+      required this.likes});
 }

@@ -4,9 +4,7 @@ class User {
   final String lastName;
   final String email;
   final String password;
-  final DateTime? dateOfBirth;
   final String? phone;
-  final Address? address;
   final DateTime createdAt;
   final String? profilePicture;
 
@@ -16,20 +14,8 @@ class User {
     required this.lastName,
     required this.email,
     required this.password,
-    this.dateOfBirth,
     this.phone,
-    this.address,
     required this.createdAt,
     this.profilePicture,
-  });
-}
-
-class Address {
-  final String city;
-  final String state;
-
-  Address({
-    required this.city,
-    required this.state,
   });
 }
