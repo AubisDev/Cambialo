@@ -14,7 +14,7 @@ class Post {
 
   Post(
       {required this.id,
-      required this.author_id,
+      required this.authorId,
       required this.createdAt,
       required this.images,
       required this.location,
