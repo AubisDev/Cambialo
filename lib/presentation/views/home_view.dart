@@ -18,7 +18,7 @@ class HomeView extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           PostBloc(postRepository)..add(FetchedHomeDataEvent()),
-      child: _HomeView(),
+      child: const _HomeView(),
     );
   }
 }
@@ -39,10 +39,8 @@ class _HomeView extends StatelessWidget {
         if (state.recentsPosts.isEmpty &&
             state.preferencesPosts.isEmpty &&
             state.error.isEmpty) {
-          // Estado inicial o de carga
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (state.error.isNotEmpty) {
-          // Estado de error
           return Center(child: Text('Error: ${state.error}'));
         } else {
           return CustomScrollView(
@@ -59,10 +57,7 @@ class _HomeView extends StatelessWidget {
                   (context, index) {
                     return Column(
                       children: [
-                        ElevatedButton(
-                            onPressed: () => fetchHomeData(context),
-                            child: Text('"CLICK"')),
-                        _PostList(),
+                        PostsSlideShow(posts: state.recentsPosts),
                         PostHorizontalListView(
                           posts: state.preferencesPosts,
                           title: "Tus preferencias",
@@ -86,27 +81,6 @@ class _HomeView extends StatelessWidget {
             ],
           );
         }
-      },
-    );
-  }
-}
-
-class _PostList extends StatelessWidget {
-  const _PostList({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<PostBloc, PostState>(
-      builder: (context, state) {
-        return Column(
-          children: [
-            PostsSlideShow(posts: state.recentsPosts),
-            PostHorizontalListView(
-              posts: state.preferencesPosts,
-              title: "Tus preferencias",
-            ),
-          ],
-        );
       },
     );
   }
