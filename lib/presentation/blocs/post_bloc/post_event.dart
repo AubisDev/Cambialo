@@ -9,11 +9,16 @@ abstract class PostEvent {
 }
 
 class FetchedHomeDataEvent extends PostEvent {
-  FetchedHomeDataEvent();
+  const FetchedHomeDataEvent();
 }
 
 class FetchedHomeDataEventError extends PostEvent {
   final String error;
 
-  FetchedHomeDataEventError(this.error);
+  const FetchedHomeDataEventError(this.error);
+}
+
+class FetchUserEvent extends PostEvent {
+  final User user;
+  const FetchUserEvent(this.user);
 }

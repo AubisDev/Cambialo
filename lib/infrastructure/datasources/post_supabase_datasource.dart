@@ -4,28 +4,41 @@ import 'package:truequealo/domain/entities/post.dart';
 
 import '../mappers/post_mapper.dart';
 import '../models/post_supabase.dart';
+import '../models/user_supabase.dart';
 
 final supabase = Supabase.instance.client;
 final pageSize = 5;
 
 class PostSupabaseDatasource extends PostsDatasource {
-  Post _responseToPostEntity(Map<String, dynamic> apiResponse) {
-    final postSupabase = PostSupabase.fromJson(apiResponse);
-    return PostMapper.postToPostEntity(postSupabase);
+  Post _responseToPostEntity(
+      Map<String, dynamic> postResponse, Map<String, dynamic> userResponse) {
+    final postSupabase = PostSupabase.fromJson(postResponse);
+    final userSupabase = UserSupabase.fromJson(userResponse);
+    return PostMapper.postToPostEntity(postSupabase, userSupabase);
   }
 
   @override
   Future<List<Post>> getRecentPosts({int page = 1}) async {
     final offset = (page - 1) * pageSize;
-    final response = await supabase
+    final postResponse = await supabase
         .from('posts')
         .select()
         .order('created_at', ascending: false)
         .range(offset, offset + pageSize - 1);
-    if (response == null || response.isEmpty) {
+
+    if (postResponse.isEmpty) {
       return [];
     }
-    return response.map((post) => _responseToPostEntity(post)).toList();
+    final futures = postResponse.map((post) async {
+      final authorId = post['author_id'];
+      final userResponse = await supabase
+          .from('users')
+          .select()
+          .eq("id", authorId.toString())
+          .single();
+      return _responseToPostEntity(post, userResponse);
+    }).toList();
+    return Future.wait(futures);
   }
 
   @override
@@ -37,15 +50,25 @@ class PostSupabaseDatasource extends PostsDatasource {
   @override
   Future<List<Post>> getPostsByCategory(int categoryId, {int page = 1}) async {
     final offset = (page - 1) * pageSize;
-    final List<Map<String, dynamic>> response = await supabase
+    final List<Map<String, dynamic>> postResponse = await supabase
         .from('posts')
         .select()
         .contains('categories_id', [categoryId]).range(
             offset, offset + pageSize - 1);
-    if (response == null || response.isEmpty) {
+
+    if (postResponse.isEmpty) {
       return [];
     }
-    return response.map((post) => _responseToPostEntity(post)).toList();
+    final futures = postResponse.map((post) async {
+      final authorId = post['author_id'];
+      final userResponse = await supabase
+          .from('users')
+          .select()
+          .eq("id", authorId.toString())
+          .single();
+      return _responseToPostEntity(post, userResponse);
+    }).toList();
+    return Future.wait(futures);
   }
 
   @override

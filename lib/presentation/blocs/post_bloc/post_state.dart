@@ -6,10 +6,11 @@ class PostState extends Equatable {
   final List<Post> recentsPosts;
   final String error;
 
-  const PostState(
-      {this.error = "",
-      this.recentsPosts = const [],
-      this.preferencesPosts = const []});
+  const PostState({
+    this.error = "",
+    this.recentsPosts = const [],
+    this.preferencesPosts = const [],
+  });
 
   PostState copyWith({
     List<Post>? recentsPosts,

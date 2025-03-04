@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../domain/entities/post.dart';
+import '../../../domain/entities/user.dart';
 import '../../../infrastructure/repositories/post_repository_impl.dart';
 
 part 'post_event.dart';
@@ -25,8 +26,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       print("preferences from bloc $preferencesPosts");
       emit(state.copyWith(
           recentsPosts: recentPosts, preferencesPosts: preferencesPosts));
-    } catch (e) {
+    } catch (e, trackTrace) {
       print(e);
+      print(trackTrace);
       emit(state.copyWith(error: e.toString()));
     }
   }

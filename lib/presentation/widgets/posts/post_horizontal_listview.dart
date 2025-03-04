@@ -133,12 +133,14 @@ class _PostCard extends StatelessWidget {
                                 radius: 12,
                                 // maxRadius: 16
                                 child: Text(
+                                  //Todo User profile pic
                                   "A",
                                   style: TextStyle(fontSize: 12),
                                 ),
                               ),
                               const SizedBox(width: 6),
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     "Primer y segun Nombre",
@@ -146,6 +148,7 @@ class _PostCard extends StatelessWidget {
                                     style: textStyles.bodySmall,
                                   ),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       const Icon(Icons.location_pin, size: 12),
                                       const SizedBox(width: 4),

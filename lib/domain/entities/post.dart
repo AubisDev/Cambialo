@@ -1,3 +1,5 @@
+import 'package:truequealo/domain/entities/user.dart';
+
 class Post {
   final int id;
   final int authorId;
@@ -11,10 +13,12 @@ class Post {
   final List<int> likedBy;
   final List<int> questionsIds;
   final List<int> categoriesIds;
+  final User authorData;
 
   Post(
       {required this.id,
       required this.authorId,
+      required this.authorData,
       required this.createdAt,
       required this.images,
       required this.location,
