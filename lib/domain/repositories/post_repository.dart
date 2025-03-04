@@ -1,9 +1,10 @@
 import '../entities/post.dart';
 
 abstract class PostRepository {
-  Future<List<Post>> getUserPreferences();
-  Future<List<Post>> getNewtPosts();
-  Future<List<Post>> getRecommendedPosts();
-  Future<List<Post>> getPostsByCategory(String categoryId);
-  Future<Post> getPostById(String id);
+  Future<List<Post>> getUserPreferences(List<int> categoriesIds,
+      {int page = 1});
+  Future<List<Post>> getNewtPosts({int page = 1});
+  Future<List<Post>> getRecommendedPosts({int page = 1});
+  Future<List<Post>> getPostsByCategory(int categoryId, {int page = 1});
+  Future<Post> getPostById(int id);
 }

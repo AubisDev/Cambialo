@@ -8,27 +8,28 @@ class PostRepositoryImpl extends PostRepository {
   PostRepositoryImpl(this.datasource);
 
   @override
-  Future<List<Post>> getNewtPosts() {
-    return datasource.getNewtPosts();
+  Future<List<Post>> getNewtPosts({int page = 1}) {
+    return datasource.getNewtPosts(page: page);
   }
 
   @override
-  Future<Post> getPostById(String id) {
+  Future<Post> getPostById(int id) {
     return datasource.getPostById(id);
   }
 
   @override
-  Future<List<Post>> getPostsByCategory(String categoryId) {
+  Future<List<Post>> getPostsByCategory(int categoryId, {int page = 1}) {
     return datasource.getPostsByCategory(categoryId);
   }
 
   @override
-  Future<List<Post>> getRecommendedPosts() {
-    return datasource.getRecommendedPosts();
+  Future<List<Post>> getRecommendedPosts({int page = 1}) {
+    return datasource.getRecommendedPosts(page: page);
   }
 
   @override
-  Future<List<Post>> getUserPreferences() {
-    return datasource.getUserPreferences();
+  Future<List<Post>> getUserPreferences(List<int> categoriesIds,
+      {int page = 1}) {
+    return datasource.getUserPreferences(categoriesIds, page: page);
   }
 }
