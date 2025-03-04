@@ -46,6 +46,12 @@ class _MovieHorizontalListViewState extends State<PostHorizontalListView> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.posts == null || widget.posts.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
     return SizedBox(
       height: 350,
       child: Column(
@@ -100,6 +106,7 @@ class _PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Stack(
@@ -134,7 +141,8 @@ class _PostCard extends StatelessWidget {
                               Column(
                                 children: [
                                   Text(
-                                    "${post.createdBy.firstName} ${post.createdBy.lastName}",
+                                    "Primer y segun Nombre",
+                                    //"${post.createdBy.firstName} ${post.createdBy.lastName}",
                                     style: textStyles.bodySmall,
                                   ),
                                   Row(
@@ -163,7 +171,7 @@ class _PostCard extends StatelessWidget {
                             // image: NetworkImage(
                             //   "https://scontent.fccs3-2.fna.fbcdn.net/v/t39.30808-6/480957331_2702570956604350_3419773857079888296_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=ZTo_KnPu8NMQ7kNvgFO38EN&_nc_oc=AdjlJtrXQAkLe5xd0y3BJMYRCoaezjnNLGZA2ops50-Nhh2Eqz6fkTzZtV6wvUJWdD0&_nc_zt=23&_nc_ht=scontent.fccs3-2.fna&_nc_gid=Ag9Fcm47-JLY4wkT2drvw6O&oh=00_AYB-pfc5TWFkM7ZsRWzSNx3oHB_HoiwkaSDmJUDSpahq5w&oe=67C28F63",
                             // ),
-                            image: NetworkImage(post.portraitImage),
+                            image: NetworkImage(post.images[0]),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -220,7 +228,8 @@ class _PostCard extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    post.commentsAmount.toString(),
+                                    "10",
+                                    // post.commentsAmount.toString(),
                                     style: textStyles.labelMedium,
                                     textAlign: TextAlign.center,
                                   ),
@@ -283,7 +292,7 @@ class _Slide extends StatelessWidget {
                       fit: BoxFit.cover,
                       placeholder: const AssetImage(
                           'assets/loaders/image_placeholder.gif'),
-                      image: NetworkImage(post.portraitImage)),
+                      image: NetworkImage(post.images[0])),
                 ),
               ),
             ),

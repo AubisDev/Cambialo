@@ -217,7 +217,7 @@ class _PostScreenState extends State<PostScreen> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
                                       child: Image.network(
-                                        post.portraitImage,
+                                        post.images[0],
                                         width: 60,
                                         height: 60,
                                         fit: BoxFit.cover,

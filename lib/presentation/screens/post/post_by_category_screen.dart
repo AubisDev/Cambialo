@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:truequealo/config/helpers/test_data.dart';
 
 import '../../../config/helpers/utils.dart';
 
@@ -20,9 +19,9 @@ class PostByCategoryScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemCount: testingPosts.length,
+        itemCount: 1,
         itemBuilder: (context, index) {
-          final post = testingPosts[index];
+          // final post = testingPosts[index];
           return GridTile(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -34,7 +33,7 @@ class PostByCategoryScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                     placeholder: const AssetImage(
                         'assets/loaders/image_placeholder.gif'),
-                    image: NetworkImage(post.portraitImage),
+                    image: NetworkImage("https://picsum.photos/600/400"),
                   ),
                   SizedBox(
                     child: Padding(
@@ -44,7 +43,7 @@ class PostByCategoryScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            post.title,
+                            "Aqui iria el titulo",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -57,7 +56,7 @@ class PostByCategoryScreen extends StatelessWidget {
                               ),
                               const SizedBox(width: 3),
                               Text(
-                                post.location,
+                                "Aqui iria la locacion",
                                 style: textStyle.labelSmall
                                     ?.copyWith(color: Colors.black45),
                               )

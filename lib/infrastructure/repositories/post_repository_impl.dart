@@ -8,8 +8,8 @@ class PostRepositoryImpl extends PostRepository {
   PostRepositoryImpl(this.datasource);
 
   @override
-  Future<List<Post>> getNewtPosts({int page = 1}) {
-    return datasource.getNewtPosts(page: page);
+  Future<List<Post>> getRecentPosts({int page = 1}) {
+    return datasource.getRecentPosts(page: page);
   }
 
   @override

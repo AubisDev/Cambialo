@@ -61,7 +61,7 @@ class _Slide extends StatelessWidget {
               fit: BoxFit.cover,
               placeholder:
                   const AssetImage('assets/loaders/ìmage_placeholder.gif'),
-              image: NetworkImage(post.portraitImage),
+              image: NetworkImage(post.images[0]),
             ),
           ),
         ),
