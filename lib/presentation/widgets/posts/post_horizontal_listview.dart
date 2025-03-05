@@ -133,123 +133,175 @@ class _PostCard extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                              radius: 12,
-                              // maxRadius: 16
-                              child: Image.network(
-                                  post.authorData.profilePicture.toString())),
-                          const SizedBox(width: 6),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${post.authorData.firstName} ${post.authorData.lastName}",
-                                style: textStyles.bodyMedium,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const Icon(Icons.location_pin, size: 12),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    post.location,
-                                    style: textStyles.labelSmall?.copyWith(
-                                      color: Colors.grey,
-                                      fontStyle: FontStyle.italic,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                      _CardHeader(post: post),
                       const SizedBox(height: 8),
-                      FadeInImage(
-                        height: 160,
-                        fit: BoxFit.cover,
-                        placeholder: const AssetImage(
-                            'assets/loaders/image_placeholder.gif'),
-                        image: NetworkImage(post.images[0]),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 8.0,
-                        ),
-                        child: Text(
-                          post.title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: textStyles.bodyMedium
-                              ?.copyWith(color: Colors.grey.shade200),
-                        ),
-                      ),
+                      _CardImage(post: post),
+                      _CardTitle(post: post, textStyles: textStyles),
                       const SizedBox(height: 8),
                     ],
                   ),
                 ),
                 const Spacer(),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: Colors.grey.shade800),
-                    ),
-                  ),
-                  height: 40,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(post.likes.toString(),
-                                  style: textStyles.labelMedium),
-                              const SizedBox(width: 4),
-                              const Icon(
-                                Icons.thumb_up_alt_outlined,
-                                size: 16,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 1,
-                        color: Colors.grey.shade800,
-                        height: double.infinity,
-                      ),
-                      Expanded(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                post.questionsIds.length.toString(),
-                                // post.commentsAmount.toString(),
-                                style: textStyles.labelMedium,
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(width: 4),
-                              const Icon(
-                                Icons.mode_comment_outlined,
-                                size: 16,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                _CardFooter(post: post, textStyles: textStyles)
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _CardHeader extends StatelessWidget {
+  final Post post;
+  const _CardHeader({super.key, required this.post});
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyles = Theme.of(context).textTheme;
+    return Row(
+      children: [
+        CircleAvatar(
+            radius: 12,
+            child: Image.network(post.authorData.profilePicture.toString())),
+        const SizedBox(width: 6),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "${post.authorData.firstName} ${post.authorData.lastName}",
+              style: textStyles.bodyMedium,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Icon(Icons.location_pin, size: 12),
+                const SizedBox(width: 4),
+                Text(
+                  post.location,
+                  style: textStyles.labelSmall?.copyWith(
+                    color: Colors.grey,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _CardImage extends StatelessWidget {
+  const _CardImage({
+    super.key,
+    required this.post,
+  });
+
+  final Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeInImage(
+      height: 160,
+      fit: BoxFit.cover,
+      placeholder: const AssetImage('assets/loaders/image_placeholder.gif'),
+      image: NetworkImage(post.images[0]),
+    );
+  }
+}
+
+class _CardTitle extends StatelessWidget {
+  const _CardTitle({
+    super.key,
+    required this.post,
+    required this.textStyles,
+  });
+
+  final Post post;
+  final TextTheme textStyles;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 8.0,
+      ),
+      child: Text(
+        post.title,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: textStyles.bodyMedium?.copyWith(color: Colors.grey.shade200),
+      ),
+    );
+  }
+}
+
+class _CardFooter extends StatelessWidget {
+  const _CardFooter({
+    super.key,
+    required this.post,
+    required this.textStyles,
+  });
+
+  final Post post;
+  final TextTheme textStyles;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Colors.grey.shade800),
+        ),
+      ),
+      height: 40,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextButton(
+              onPressed: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(post.likes.toString(), style: textStyles.labelMedium),
+                  const SizedBox(width: 4),
+                  const Icon(
+                    Icons.thumb_up_alt_outlined,
+                    size: 16,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: 1,
+            color: Colors.grey.shade800,
+            height: double.infinity,
+          ),
+          Expanded(
+            child: TextButton(
+              onPressed: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    post.questionsIds.length.toString(),
+                    // post.commentsAmount.toString(),
+                    style: textStyles.labelMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(
+                    Icons.mode_comment_outlined,
+                    size: 16,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
