@@ -5,6 +5,6 @@ abstract class PostsDatasource {
       {int page = 1});
   Future<List<Post>> getRecentPosts({int page = 1});
   Future<List<Post>> getRecommendedPosts({int page = 1});
-  Future<List<Post>> getPostsByCategory(int cateogoryId, {int page = 1});
+  Future<List<Post>> getPostsByCategory(int categoryId, {int page = 1});
   Future<Post> getPostById(int id);
 }

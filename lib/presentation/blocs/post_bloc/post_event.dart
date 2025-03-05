@@ -22,3 +22,11 @@ class FetchUserEvent extends PostEvent {
   final User user;
   const FetchUserEvent(this.user);
 }
+
+class LoadMoreRecentPosts extends PostEvent {
+  const LoadMoreRecentPosts();
+}
+
+class LoadMorePreferencesPosts extends PostEvent {
+  const LoadMorePreferencesPosts();
+}

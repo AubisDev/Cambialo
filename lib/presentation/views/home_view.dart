@@ -29,7 +29,15 @@ class _HomeView extends StatelessWidget {
   });
 
   void fetchHomeData(BuildContext context) {
-    context.read<PostBloc>().add(FetchedHomeDataEvent());
+    context.read<PostBloc>().add(const FetchedHomeDataEvent());
+  }
+
+  void loadNextPageRecentPosts(BuildContext context) {
+    context.read<PostBloc>().add(const LoadMoreRecentPosts());
+  }
+
+  void loadNextPagePreferencesPosts(BuildContext context) {
+    context.read<PostBloc>().add(const LoadMorePreferencesPosts());
   }
 
   @override
@@ -62,11 +70,17 @@ class _HomeView extends StatelessWidget {
                         PostHorizontalListView(
                           posts: state.preferencesPosts,
                           title: "Tus preferencias",
+                          loadNextPage: () => context
+                              .read<PostBloc>()
+                              .add(const LoadMorePreferencesPosts()),
                         ),
                         const SizedBox(height: 30),
                         PostHorizontalListView(
                           posts: state.recentsPosts,
                           title: "Novedades del dia",
+                          loadNextPage: () => context
+                              .read<PostBloc>()
+                              .add(const LoadMoreRecentPosts()),
                         ),
                         const SizedBox(height: 30),
                         // PostHorizontalListView(

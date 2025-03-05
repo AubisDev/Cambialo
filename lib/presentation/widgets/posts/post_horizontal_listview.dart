@@ -1,7 +1,5 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:truequealo/config/helpers/human_format.dart';
 import 'package:truequealo/domain/entities/entities.dart';
 
 class PostHorizontalListView extends StatefulWidget {
@@ -23,26 +21,33 @@ class PostHorizontalListView extends StatefulWidget {
 
 class _MovieHorizontalListViewState extends State<PostHorizontalListView> {
   final scrollController = ScrollController();
+  bool isLoading = false;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   scrollController.addListener(() {
-  //     if (widget.loadNextPage == null) return;
-  //
-  //     if ((scrollController.position.pixels + 200) >=
-  //         scrollController.position.maxScrollExtent) {
-  //       print('load next movies');
-  //       widget.loadNextPage!();
-  //     }
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() async {
+      if (widget.loadNextPage == null || isLoading) return;
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   scrollController.dispose();
-  // }
+      if ((scrollController.position.pixels + 200) >=
+          scrollController.position.maxScrollExtent) {
+        isLoading = true;
+        widget.loadNextPage!();
+      }
+    });
+  }
+
+  void resetLoading() {
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,204 +110,145 @@ class _PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme;
-    final colors = Theme.of(context).colorScheme;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Stack(
-        children: [
-          GestureDetector(
-            onTap: () => context.push("/post", extra: post),
-            child: Card(
-              child: SizedBox(
-                width: 225,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 12,
-                        left: 20,
-                        right: 20,
-                      ),
-                      child: Column(
+      child: GestureDetector(
+        onTap: () => context.push("/post", extra: post),
+        child: Card(
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.grey.shade800),
+              borderRadius: BorderRadius.circular(10)),
+          child: SizedBox(
+            width: 225,
+            height: 1000,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 12,
+                    left: 20,
+                    right: 20,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
                         children: [
-                          Row(
+                          CircleAvatar(
+                              radius: 12,
+                              // maxRadius: 16
+                              child: Image.network(
+                                  post.authorData.profilePicture.toString())),
+                          const SizedBox(width: 6),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CircleAvatar(
-                                  radius: 12,
-                                  // maxRadius: 16
-                                  child: Image.network(post
-                                      .authorData.profilePicture
-                                      .toString())),
-                              const SizedBox(width: 6),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Text(
+                                "${post.authorData.firstName} ${post.authorData.lastName}",
+                                style: textStyles.bodyMedium,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  const Icon(Icons.location_pin, size: 12),
+                                  const SizedBox(width: 4),
                                   Text(
-                                    "${post.authorData.firstName} ${post.authorData.lastName}",
-                                    style: textStyles.bodySmall,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Icon(Icons.location_pin, size: 12),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        post.location,
-                                        style: textStyles.labelSmall?.copyWith(
-                                          color: Colors.grey,
-                                          fontStyle: FontStyle.italic,
-                                        ),
-                                      ),
-                                    ],
+                                    post.location,
+                                    style: textStyles.labelSmall?.copyWith(
+                                      color: Colors.grey,
+                                      fontStyle: FontStyle.italic,
+                                    ),
                                   ),
                                 ],
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
-                          FadeInImage(
-                            height: 160,
-                            fit: BoxFit.cover,
-                            placeholder: const AssetImage(
-                                'assets/loaders/image_placeholder.gif'),
-                            image: NetworkImage(post.images[0]),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 16.0,
-                            ),
-                            child: Text(
-                              post.title,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: textStyles.bodySmall
-                                  ?.copyWith(color: Colors.grey.shade200),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
                         ],
                       ),
-                    ),
-                    const Spacer(),
-                    Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          top: BorderSide(color: Colors.black26),
+                      const SizedBox(height: 8),
+                      FadeInImage(
+                        height: 160,
+                        fit: BoxFit.cover,
+                        placeholder: const AssetImage(
+                            'assets/loaders/image_placeholder.gif'),
+                        image: NetworkImage(post.images[0]),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8.0,
+                        ),
+                        child: Text(
+                          post.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: textStyles.bodyMedium
+                              ?.copyWith(color: Colors.grey.shade200),
                         ),
                       ),
-                      height: 40,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(post.likes.toString(),
-                                      style: textStyles.labelMedium),
-                                  const SizedBox(width: 4),
-                                  const Icon(
-                                    Icons.thumb_up_alt_outlined,
-                                    size: 16,
-                                  ),
-                                ],
+                      const SizedBox(height: 8),
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: Colors.grey.shade800),
+                    ),
+                  ),
+                  height: 40,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(post.likes.toString(),
+                                  style: textStyles.labelMedium),
+                              const SizedBox(width: 4),
+                              const Icon(
+                                Icons.thumb_up_alt_outlined,
+                                size: 16,
                               ),
-                            ),
+                            ],
                           ),
-                          Container(
-                            width: 1,
-                            color: Colors.black26,
-                            height: double.infinity,
-                          ),
-                          Expanded(
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "10",
-                                    // post.commentsAmount.toString(),
-                                    style: textStyles.labelMedium,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  const Icon(
-                                    Icons.mode_comment_outlined,
-                                    size: 16,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    )
-                  ],
-                ),
-              ),
+                      Container(
+                        width: 1,
+                        color: Colors.grey.shade800,
+                        height: double.infinity,
+                      ),
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                post.questionsIds.length.toString(),
+                                // post.commentsAmount.toString(),
+                                style: textStyles.labelMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(width: 4),
+                              const Icon(
+                                Icons.mode_comment_outlined,
+                                size: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
-          Positioned(
-            top: 14,
-            right: 20,
-            child: Text(
-              HumanFormat.formatDate(post.createdAt),
-              style:
-                  textStyles.bodySmall?.copyWith(color: Colors.grey.shade700),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _Slide extends StatelessWidget {
-  final Post post;
-
-  const _Slide({super.key, required this.post});
-
-  @override
-  Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme;
-
-    return FadeInRight(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // IMAGE
-            SizedBox(
-              width: 150,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: FadeInImage(
-                      height: 220,
-                      fit: BoxFit.cover,
-                      placeholder: const AssetImage(
-                          'assets/loaders/image_placeholder.gif'),
-                      image: NetworkImage(post.images[0])),
-                ),
-              ),
-            ),
-            // TITLE
-            const SizedBox(height: 5),
-            SizedBox(
-              width: 150,
-              child: Text(
-                post.title,
-                maxLines: 2,
-                style: textStyle.titleSmall,
-              ),
-            ),
-          ],
         ),
       ),
     );
