@@ -58,6 +58,7 @@ class _HomeView extends StatelessWidget {
                     return Column(
                       children: [
                         PostsSlideShow(posts: state.recentsPosts),
+                        const SizedBox(height: 30),
                         PostHorizontalListView(
                           posts: state.preferencesPosts,
                           title: "Tus preferencias",
