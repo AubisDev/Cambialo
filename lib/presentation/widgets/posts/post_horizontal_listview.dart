@@ -114,7 +114,7 @@ class _PostCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: GestureDetector(
-        onTap: () => context.push("/post", extra: post),
+        onTap: () => context.push("/${post.id}", extra: post),
         child: Card(
           shape: RoundedRectangleBorder(
               side: BorderSide(color: Colors.grey.shade800),

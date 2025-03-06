@@ -11,4 +11,17 @@ class HumanFormat {
       return 'Hace $difference días';
     }
   }
+
+  static String formatDateUserSince(DateTime date) {
+    final now = DateTime.now();
+    final differenceInYears = (now.difference(date).inDays / 365.25).floor();
+
+    if (differenceInYears == 0) {
+      return 'este año';
+    } else if (differenceInYears == 1) {
+      return 'hace $differenceInYears año';
+    } else {
+      return 'hace $differenceInYears años';
+    }
+  }
 }

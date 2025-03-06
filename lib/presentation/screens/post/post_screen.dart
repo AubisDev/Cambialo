@@ -1,18 +1,49 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:truequealo/config/helpers/human_format.dart';
 import 'package:truequealo/domain/entities/entities.dart';
+import 'package:truequealo/infrastructure/datasources/post_supabase_datasource.dart';
+import 'package:truequealo/infrastructure/repositories/post_repository_impl.dart';
+import 'package:truequealo/presentation/blocs/post_cubit/post_cubit.dart';
 
-class PostScreen extends StatefulWidget {
-  const PostScreen({super.key});
+class PostScreen extends StatelessWidget {
+  final int postId;
+
+  const PostScreen({super.key, required this.postId});
 
   @override
-  State<PostScreen> createState() => _PostScreenState();
+  Widget build(BuildContext context) {
+    return RepositoryProvider(
+      create: (context) => PostRepositoryImpl(PostSupabaseDatasource()),
+      child: BlocProvider(
+        create: (context) => PostCubit(
+          context.read<PostRepositoryImpl>(),
+        ),
+        child: _PostView(postId: postId),
+      ),
+    );
+  }
 }
 
-class _PostScreenState extends State<PostScreen> {
-  bool liked = false;
-  bool disliked = false;
+class _PostView extends StatefulWidget {
+  final int postId;
+
+  const _PostView({super.key, required this.postId});
+
+  @override
+  State<_PostView> createState() => _PostViewState();
+}
+
+class _PostViewState extends State<_PostView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PostCubit>().getPostData(widget.postId);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,27 +53,12 @@ class _PostScreenState extends State<PostScreen> {
     final post = GoRouterState.of(context).extra as Post?;
 
     if (post == null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Algo salio mal"),
-            const Text("Pagina no encontrada"),
-            const SizedBox(height: 12),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                    side: BorderSide(color: colors.primary),
-                  ),
-                ),
-                onPressed: () => context.push("/"),
-                child: const Text("Ir al inicio"))
-          ],
+      const Center(
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
         ),
       );
     }
-
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -55,7 +71,10 @@ class _PostScreenState extends State<PostScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _PostSlideshowImages(
-                          size: size, colors: colors, post: post),
+                        size: size,
+                        colors: colors,
+                        post: post,
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 16),
@@ -63,7 +82,7 @@ class _PostScreenState extends State<PostScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              post.title,
+                              post!.title,
                               style: textStyles.displaySmall,
                             ),
                             const SizedBox(height: 10),
@@ -79,32 +98,33 @@ class _PostScreenState extends State<PostScreen> {
                                       children: [
                                         IconButton(
                                           onPressed: () {
-                                            setState(() {
-                                              if (liked) {
-                                                setState(() {
-                                                  liked = false;
-                                                });
-                                              } else if (disliked) {
-                                                setState(() {
-                                                  disliked = false;
-                                                  liked = true;
-                                                });
-                                              } else {
-                                                setState(() {
-                                                  liked = true;
-                                                });
-                                              }
-                                            });
+                                            // setState(() {
+                                            //   if (liked) {
+                                            //     setState(() {
+                                            //       liked = false;
+                                            //     });
+                                            //   } else if (disliked) {
+                                            //     setState(() {
+                                            //       disliked = false;
+                                            //       liked = true;
+                                            //     });
+                                            //   } else {
+                                            //     setState(() {
+                                            //       liked = true;
+                                            //     });
+                                            //   }
+                                            // });
                                           },
                                           icon: Icon(
-                                            liked
-                                                ? Icons.thumb_up_alt
-                                                : Icons.thumb_up_alt_outlined,
+                                            Icons.thumb_up_alt,
+                                            // liked
+                                            //     ? Icons.thumb_up_alt
+                                            //     : Icons.thumb_up_alt_outlined,
                                             color: Colors.green,
                                           ),
                                         ),
                                         Text(
-                                          "11",
+                                          post.likes.toString(),
                                           style: textStyles.labelLarge,
                                         ),
                                       ],
@@ -113,30 +133,31 @@ class _PostScreenState extends State<PostScreen> {
                                       children: [
                                         IconButton(
                                           onPressed: () {
-                                            if (disliked) {
-                                              setState(() {
-                                                disliked = false;
-                                              });
-                                            } else if (liked) {
-                                              setState(() {
-                                                liked = false;
-                                                disliked = true;
-                                              });
-                                            } else {
-                                              setState(() {
-                                                disliked = true;
-                                              });
-                                            }
+                                            // if (disliked) {
+                                            //   setState(() {
+                                            //     disliked = false;
+                                            //   });
+                                            // } else if (liked) {
+                                            //   setState(() {
+                                            //     liked = false;
+                                            //     disliked = true;
+                                            //   });
+                                            // } else {
+                                            //   setState(() {
+                                            //     disliked = true;
+                                            //   });
+                                            // }
                                           },
                                           icon: Icon(
-                                            disliked
-                                                ? Icons.thumb_down_alt
-                                                : Icons.thumb_down_alt_outlined,
+                                            Icons.thumb_down_alt,
+                                            // disliked
+                                            //     ? Icons.thumb_down_alt
+                                            //     : Icons.thumb_down_alt_outlined,
                                             color: Colors.red,
                                           ),
                                         ),
                                         Text(
-                                          "3",
+                                          post.dislikes.toString(),
                                           style: textStyles.labelLarge,
                                         ),
                                       ],
@@ -230,12 +251,12 @@ class _PostScreenState extends State<PostScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Nayib Bukkele",
-                                        style: TextStyle(
+                                        "${post.authorData.firstName} ${post.authorData.lastName}",
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        "Miembro desde hace",
+                                        "Miembro desde ${HumanFormat.formatDateUserSince(post.createdAt)}",
                                       )
                                     ],
                                   )
@@ -473,9 +494,40 @@ class _PostSlideshowImages extends StatelessWidget {
           ),
         ),
         itemCount: post!.images.length,
-        itemBuilder: (context, index) => Image.network(
-          post!.images[0],
-          fit: BoxFit.cover,
+        itemBuilder: (context, index) => Stack(
+          children: [
+            FadeInImage(
+              height: double.infinity,
+              fit: BoxFit.contain,
+              placeholder:
+                  const AssetImage('assets/loaders/image_placeholder.gif'),
+              image: NetworkImage(post!.images[index]),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft, // Ajusta la esquina a oscurecer
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.black.withOpacity(0.4), // Ajusta la opacidad
+                    Colors.transparent,
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              left: 10,
+              top: 10,
+              child: IconButton(
+                onPressed: () {
+                  context.pop();
+                },
+                icon: const Icon(Icons.arrow_back_ios_new_outlined),
+                iconSize: 30,
+              ),
+            )
+          ],
         ),
       ),
     );

@@ -12,13 +12,14 @@ class PostCubit extends Cubit<PostState> {
 
   PostCubit(this._postRepository) : super(const PostState());
 
-  Future<void> _getPostData(int id) async {
+  Future<void> getPostData(int id) async {
     final Post? alreadySeenPost =
         state.seenPosts.firstWhere((post) => post.id == id, orElse: null);
     if (alreadySeenPost != null) {
       state.copyWith(post: alreadySeenPost);
       return;
     }
+    print("FETCHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
     final post = await _postRepository.datasource.getPostById(id);
     state.copyWith(post: post);
   }

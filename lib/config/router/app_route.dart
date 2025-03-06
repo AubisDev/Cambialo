@@ -27,9 +27,11 @@ final appRoute = GoRouter(
               builder: (context, state) => const HomeView(),
               routes: [
                 GoRoute(
-                  path: Routes.post, // Agrega la ruta post/:id aquí
+                  path: Routes.post,
                   builder: (context, state) {
-                    return PostScreen();
+                    final postId =
+                        int.parse(state.pathParameters['postId'] ?? "no-id");
+                    return PostScreen(postId: postId);
                   },
                 ),
               ],
