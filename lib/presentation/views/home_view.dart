@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:truequealo/infrastructure/repositories/post_repository_impl.dart';
-import 'package:truequealo/presentation/blocs/post_bloc/post_bloc.dart';
+import 'package:truequealo/presentation/blocs/preferences_posts_cubit/preferences_posts_cubit.dart';
+import 'package:truequealo/presentation/blocs/recent_posts_cubit/recent_posts_cubit.dart';
 import 'package:truequealo/presentation/widgets/shared/CustomAppBar.dart';
 import 'package:truequealo/presentation/widgets/widgets.dart';
 
@@ -12,91 +13,85 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final supabaseDatasource = PostSupabaseDatasource();
-    final postRepository = PostRepositoryImpl(supabaseDatasource);
-
-    return BlocProvider(
-      create: (context) =>
-          PostBloc(postRepository)..add(FetchedHomeDataEvent()),
-      child: const _HomeView(),
+    return RepositoryProvider(
+      create: (context) => PostRepositoryImpl(PostSupabaseDatasource()),
+      child: MultiBlocProvider(providers: [
+        BlocProvider<PreferencesPostsCubit>(
+            create: (context) =>
+                PreferencesPostsCubit(context.read<PostRepositoryImpl>())),
+        BlocProvider<RecentPostsCubit>(
+            create: (context) =>
+                RecentPostsCubit(context.read<PostRepositoryImpl>())),
+      ], child: const _HomeView()),
     );
   }
 }
 
-class _HomeView extends StatelessWidget {
+class _HomeView extends StatefulWidget {
   const _HomeView({
     super.key,
   });
 
-  void fetchHomeData(BuildContext context) {
-    context.read<PostBloc>().add(const FetchedHomeDataEvent());
-  }
+  @override
+  State<_HomeView> createState() => _HomeViewState();
+}
 
-  void loadNextPageRecentPosts(BuildContext context) {
-    context.read<PostBloc>().add(const LoadMoreRecentPosts());
-  }
-
-  void loadNextPagePreferencesPosts(BuildContext context) {
-    context.read<PostBloc>().add(const LoadMorePreferencesPosts());
+class _HomeViewState extends State<_HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PreferencesPostsCubit>().loadInitialData();
+      context.read<RecentPostsCubit>().loadInitialData();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostBloc, PostState>(
-      builder: (context, state) {
-        if (state.recentsPosts.isEmpty &&
-            state.preferencesPosts.isEmpty &&
-            state.error.isEmpty) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state.error.isNotEmpty) {
-          return Center(child: Text('Error: ${state.error}'));
-        } else {
-          return CustomScrollView(
-            slivers: [
-              const SliverAppBar(
-                floating: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  title: CustomAppBar(),
-                ),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  childCount: 1,
-                  (context, index) {
-                    return Column(
-                      children: [
-                        PostsSlideShow(posts: state.recentsPosts),
-                        const SizedBox(height: 30),
-                        PostHorizontalListView(
-                          posts: state.preferencesPosts,
-                          title: "Tus preferencias",
-                          loadNextPage: () => context
-                              .read<PostBloc>()
-                              .add(const LoadMorePreferencesPosts()),
-                        ),
-                        const SizedBox(height: 30),
-                        PostHorizontalListView(
-                          posts: state.recentsPosts,
-                          title: "Novedades del dia",
-                          loadNextPage: () => context
-                              .read<PostBloc>()
-                              .add(const LoadMoreRecentPosts()),
-                        ),
-                        const SizedBox(height: 30),
-                        // PostHorizontalListView(
-                        //   posts: [],
-                        //   title: "Tal vez te interese",
-                        // ),
-                        // const SizedBox(height: 40),
-                      ],
-                    );
-                  },
-                ),
-              )
-            ],
-          );
-        }
-      },
+    final recentPostsState = context.watch<RecentPostsCubit>().state;
+    final preferencesPostsState = context.watch<PreferencesPostsCubit>().state;
+
+    return CustomScrollView(
+      slivers: [
+        const SliverAppBar(
+          floating: true,
+          flexibleSpace: FlexibleSpaceBar(
+            title: CustomAppBar(),
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            childCount: 1,
+            (context, index) {
+              return Column(
+                children: [
+                  PostsSlideShow(posts: recentPostsState.posts),
+                  const SizedBox(height: 30),
+                  PostHorizontalListView(
+                    posts: preferencesPostsState.posts,
+                    title: "Tus preferencias",
+                    loadNextPage: () =>
+                        context.read<PreferencesPostsCubit>().onLoadNextPage(),
+                  ),
+                  const SizedBox(height: 30),
+                  PostHorizontalListView(
+                    posts: recentPostsState.posts,
+                    title: "Novedades del dia",
+                    loadNextPage: () =>
+                        context.read<RecentPostsCubit>().onLoadNextPage(),
+                  ),
+                  const SizedBox(height: 30),
+                  // PostHorizontalListView(
+                  //   posts: [],
+                  //   title: "Tal vez te interese",
+                  // ),
+                  // const SizedBox(height: 40),
+                ],
+              );
+            },
+          ),
+        )
+      ],
     );
   }
 }
