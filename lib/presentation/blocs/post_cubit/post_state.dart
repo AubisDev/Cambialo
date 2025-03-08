@@ -12,7 +12,7 @@ class PostState extends Equatable {
   }) =>
       PostState(
           post: post ?? this.post,
-          seenPosts: post != null ? [...seenPosts, post!] : seenPosts);
+          seenPosts: post != null ? [...seenPosts, post] : seenPosts);
 
   @override
   List<Object?> get props => [post];

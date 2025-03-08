@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:truequealo/infrastructure/datasources/post_supabase_datasource.dart';
+import 'package:truequealo/infrastructure/repositories/post_repository_impl.dart';
+import 'package:truequealo/presentation/blocs/posts_by_category_cubit/posts_by_category_cubit.dart';
 
 import '../../../config/helpers/utils.dart';
 
@@ -13,15 +18,77 @@ class PostByCategoryScreen extends StatelessWidget {
     final category = getCategoryData(categoryId.toString());
 
     // TODO Anadir infinite scroll
+    return RepositoryProvider(
+      create: (context) => PostRepositoryImpl(PostSupabaseDatasource()),
+      child: BlocProvider(
+        create: (context) =>
+            PostsByCategoryCubit(context.read<PostRepositoryImpl>()),
+        child:
+            _PostByCategoryView(categoryId: categoryId, textStyle: textStyle),
+      ),
+    );
+  }
+}
+
+class _PostByCategoryView extends StatefulWidget {
+  const _PostByCategoryView({
+    super.key,
+    required this.categoryId,
+    required this.textStyle,
+  });
+
+  final int categoryId;
+  final TextTheme textStyle;
+
+  @override
+  State<_PostByCategoryView> createState() => _PostByCategoryViewState();
+}
+
+class _PostByCategoryViewState extends State<_PostByCategoryView> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context
+          .read<PostsByCategoryCubit>()
+          .getPostsByCategoryId(widget.categoryId);
+    });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final postsByCategory = context.watch<PostsByCategoryCubit>().state;
+
+    if (postsByCategory.isLoading) {
+      return Center(
+        child: CircularProgressIndicator(strokeWidth: 2),
+      );
+    }
+
+    if (postsByCategory.error.isNotEmpty) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text("Something wrong happened"),
+          ElevatedButton(
+            onPressed: () => context.pop(),
+            child: const Text("Go back"),
+          )
+        ],
+      );
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text("Lo ultimo en ${category.name}")),
+      appBar: AppBar(title: Text("Lo ultimo en Categoria")),
       body: GridView.builder(
         physics: const BouncingScrollPhysics(),
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemCount: 1,
+        itemCount: postsByCategory.posts.length,
         itemBuilder: (context, index) {
-          // final post = testingPosts[index];
+          final post = postsByCategory.posts[index];
           return GridTile(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -33,7 +100,7 @@ class PostByCategoryScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                     placeholder: const AssetImage(
                         'assets/loaders/image_placeholder.gif'),
-                    image: NetworkImage("https://picsum.photos/600/400"),
+                    image: NetworkImage(post.images[0]),
                   ),
                   SizedBox(
                     child: Padding(
@@ -43,7 +110,7 @@ class PostByCategoryScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Aqui iria el titulo",
+                            post.title,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -56,8 +123,8 @@ class PostByCategoryScreen extends StatelessWidget {
                               ),
                               const SizedBox(width: 3),
                               Text(
-                                "Aqui iria la locacion",
-                                style: textStyle.labelSmall
+                                post.location,
+                                style: widget.textStyle.labelSmall
                                     ?.copyWith(color: Colors.black45),
                               )
                             ],

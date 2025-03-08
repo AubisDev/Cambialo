@@ -14,17 +14,31 @@ class PostCubit extends Cubit<PostState> {
 
   Future<void> getPostData(int id) async {
     final Post? alreadySeenPost =
-        state.seenPosts.firstWhere((post) => post.id == id, orElse: null);
+        state.seenPosts.firstWhere((post) => post.id == id);
     if (alreadySeenPost != null) {
       state.copyWith(post: alreadySeenPost);
       return;
     }
-    print("FETCHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
     final post = await _postRepository.datasource.getPostById(id);
     state.copyWith(post: post);
   }
 
   void _clearPost() {
     state.copyWith(post: null);
+  }
+
+  void handleLike(int userId) {
+    final isLikedByUser = state.post!.likedBy.contains(userId);
+    final updatedState = state.post;
+    if (isLikedByUser) {
+      updatedState!.likes -= 1;
+      updatedState!.likedBy.remove(userId);
+      state.copyWith(post: updatedState);
+      return;
+    }
+    updatedState!.likes += 1;
+    updatedState.likedBy.add(userId);
+    state.copyWith(post: updatedState);
+    return;
   }
 }
