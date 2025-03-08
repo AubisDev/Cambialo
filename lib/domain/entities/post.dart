@@ -8,8 +8,8 @@ class Post {
   final String location;
   final String description;
   final String title;
-  final int likes;
-  final int dislikes;
+  int likes;
+  int dislikes;
   final List<int> likedBy;
   final List<int> questionsIds;
   final List<int> categoriesIds;
