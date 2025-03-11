@@ -12,7 +12,6 @@ class LayoutScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    print(navigationShell.currentIndex);
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(

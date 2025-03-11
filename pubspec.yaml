@@ -41,6 +41,7 @@ dependencies:
   supabase_flutter: ^2.8.4
   flutter_bloc: ^9.1.0
   equatable: ^2.0.7
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:

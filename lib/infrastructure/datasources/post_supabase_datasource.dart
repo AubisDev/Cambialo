@@ -44,9 +44,9 @@ class PostSupabaseDatasource extends PostsDatasource {
   @override
   Future<Post> getPostById(int id) async {
     final postResponse =
-        await supabase.from('post').select().eq("id", id).single();
+        await supabase.from('posts').select().eq("id", id).single();
     final userResponse = await supabase
-        .from("user")
+        .from("users")
         .select()
         .eq("id", postResponse['author_id'])
         .single();

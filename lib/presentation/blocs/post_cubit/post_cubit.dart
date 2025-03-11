@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -14,13 +15,20 @@ class PostCubit extends Cubit<PostState> {
 
   Future<void> getPostData(int id) async {
     final Post? alreadySeenPost =
-        state.seenPosts.firstWhere((post) => post.id == id);
+        state.seenPosts.firstWhereOrNull((post) => post.id == id);
+
     if (alreadySeenPost != null) {
-      state.copyWith(post: alreadySeenPost);
+      emit(state.copyWith(post: alreadySeenPost));
       return;
     }
-    final post = await _postRepository.datasource.getPostById(id);
-    state.copyWith(post: post);
+
+    try {
+      final post = await _postRepository.datasource.getPostById(id);
+      emit(state.copyWith(post: post));
+    } catch (e) {
+      print('PostCubit: Error loading post: $e');
+      emit(state.copyWith(post: null)); // O un estado de error
+    }
   }
 
   void _clearPost() {
@@ -33,12 +41,12 @@ class PostCubit extends Cubit<PostState> {
     if (isLikedByUser) {
       updatedState!.likes -= 1;
       updatedState!.likedBy.remove(userId);
-      state.copyWith(post: updatedState);
+      emit(state.copyWith(post: updatedState));
       return;
     }
     updatedState!.likes += 1;
     updatedState.likedBy.add(userId);
-    state.copyWith(post: updatedState);
+    emit(state.copyWith(post: updatedState));
     return;
   }
 }

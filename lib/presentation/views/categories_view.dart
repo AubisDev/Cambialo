@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:truequealo/config/helpers/constants.dart';
 
 class CategoriesView extends StatelessWidget {
@@ -28,7 +27,7 @@ class CategoriesView extends StatelessWidget {
               children: [
                 ListTile(
                   onTap: () {
-                    context.push('/categories/${category.id}');
+                    // context.push('/categories/${category.id}');
                   },
                   title: Text(category.name),
                   leading: Icon(

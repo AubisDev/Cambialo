@@ -40,9 +40,7 @@ class _PostViewState extends State<_PostView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PostCubit>().getPostData(widget.postId);
-    });
+    context.read<PostCubit>().getPostData(widget.postId);
   }
 
   @override
@@ -50,60 +48,65 @@ class _PostViewState extends State<_PostView> {
     final size = MediaQuery.of(context).size;
     final colors = Theme.of(context).colorScheme;
     final textStyles = Theme.of(context).textTheme;
-    final post = GoRouterState.of(context).extra as Post?;
 
-    if (post == null) {
-      const Center(
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-        ),
-      );
-    }
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                childCount: 1,
-                (context, index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _PostSlideshowImages(post: post),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              post!.title,
-                              style: textStyles.titleLarge,
+        child: BlocBuilder<PostCubit, PostState>(
+          builder: (context, state) {
+            if (state.post == null) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                ),
+              );
+            }
+            final post = state.post;
+            return CustomScrollView(
+              slivers: [
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    childCount: 1,
+                    (context, index) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _PostSlideshowImages(post: post),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  post!.title,
+                                  style: textStyles.titleLarge,
+                                ),
+                                const _SectionSeparator(),
+                                _LikeAndCommentsButtons(
+                                  post: post,
+                                  textStyles: textStyles,
+                                  colors: colors,
+                                ),
+                                const _SectionSeparator(),
+                                _PostLocation(
+                                    post: post!, textStyles: textStyles),
+                                const _SectionSeparator(),
+                                _PostDescription(post: post!),
+                                const _SectionSeparator(),
+                                _PostUserInformation(post: post!),
+                                const _SectionSeparator(),
+                                const _CommentsSection(),
+                              ],
                             ),
-                            const _SectionSeparator(),
-                            _LikeAndCommentsButtons(
-                              post: post,
-                              textStyles: textStyles,
-                              colors: colors,
-                            ),
-                            const _SectionSeparator(),
-                            _PostLocation(post: post, textStyles: textStyles),
-                            const _SectionSeparator(),
-                            _PostDescription(post: post),
-                            const _SectionSeparator(),
-                            _PostUserInformation(post: post),
-                            const _SectionSeparator(),
-                            const _CommentsSection(),
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                },
-              ),
-            )
-          ],
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                )
+              ],
+            );
+          },
         ),
       ),
     );
