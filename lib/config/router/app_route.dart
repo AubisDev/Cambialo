@@ -83,7 +83,7 @@ final appRoute = GoRouter(
         return PostScreen(postId: postId);
       },
     ),
-//  GoRoute(path: '/login'),
-//  GoRoute(path: '/register'),
+// TODO  GoRoute(path: '/login'),
+// TODO  GoRoute(path: '/register'),
   ],
 );
